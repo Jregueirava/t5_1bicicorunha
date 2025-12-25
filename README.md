@@ -70,3 +70,4 @@ Consume en tiempo real las APIs oficiales de BiciCoruña basadas en GBFS:
 - **Exportación a PDF** con todos los datos del momento
 
 ### Lógica "¿Me compensa bajar?"
+- Le indico si le compensa bajar dependiendo del número de bicis eléctrica o mecánicas hay en la estación
