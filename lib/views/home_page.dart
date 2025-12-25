@@ -1,116 +1,128 @@
+// Pantalla principal con favorito y top e-bikes
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../viewmodels/stations_vm.dart';
+import '../models/station_combined.dart';
 import 'station_detail_page.dart';
 import 'widgets/top_ebikes_chart.dart';
 import 'widgets/compensa_indicator.dart';
 
-class HomePage extends StatefulWidget{
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+  
   @override
-  State<HomePage> createState() => HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class HomePageState extends State<HomePage>{
+class _HomePageState extends State<HomePage> {
   @override
- void innitState(){
-  super.innitState();
-  WidgetsBiding.istance.addPostFrameCallback((_){
-    context.read<StationsVm> ().loadStations();
-  });
- }
-
- @override
-
- Widget build (BuildContext context){
-  final vm = context.watch<StationsVm>();
-  
-  return Scaffold(
-    appBar: AppBar(
-      titel: const Text("BiciCoruña - Acceso Rápido"),
-      actions: [
-        IconButton(
-          tolltip: "Recargar datos",
-          onPressed: vm.loadStations,
-          icon: const Icon(Icons.refresh),
-        ),
-      ],
-    ),
-    body: _buildBody(vm),
-  );
- }
-
- Widget _buildBody(StationsVm vm){
-  if(vm.loading){
-    return const Center(child: CircularProgressIndicator());
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) { 
+      context.read<StationsVm>().loadStations();
+    });
   }
 
-  if(vm.error != null){
-    return Center(
+  @override
+  Widget build(BuildContext context) {
+    final vm = context.watch<StationsVm>();
+    
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("BiciCoruña - Acceso Rápido"),
+        actions: [
+          IconButton(
+            tooltip: "Recargar datos",
+            onPressed: vm.loadStations,
+            icon: const Icon(Icons.refresh),
+          ),
+        ],
+      ),
+      body: _buildBody(vm),
+    );
+  }
+
+  Widget _buildBody(StationsVm vm) {
+    if (vm.loading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (vm.error != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.error_outline, size: 64, color: Colors.red),
+            const SizedBox(height: 16),
+            Text("Error: ${vm.error}", textAlign: TextAlign.center),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: vm.loadStations,
+              child: const Text("Reintentar"),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (vm.allStations.isEmpty) {
+      return const Center(child: Text("No hay estaciones disponibles"));
+    }
+
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.error_outline, size 64, color: Colors.blue),
-          const SizedBox(height: 16),
-          Text("Error: ${vm.error}", textAlign: TextAlign.center),
-          const SizedBox(height:16),
-          ElevatedButton(
-            onPressed:
-            vm.loadStations,
-            child: const Text("Reintentar"),
+          // Estación favorita
+          if (vm.favoriteStation != null)
+            _FavoriteStationCard(
+              station: vm.favoriteStation!,
+              onTap: () => _goToDetail(context, vm.favoriteStation!),
+            )
+          else
+            _NoFavoriteCard(
+              onSelectFavorite: () => _showStationPicker(context, vm),
+            ),
+          
+          const SizedBox(height: 24),
+
+          // Gráfico Top e-bikes
+          const Text(
+            "Top 5 estaciones con más e-bikes",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 12),
+          SizedBox(
+            height: 250,
+            child: TopEbikesChart(topStations: vm.getTopByEbikes(5)),
+          ),
+          
+          const SizedBox(height: 24),
+          
+          Center(
+            child: ElevatedButton.icon(
+              onPressed: () => _showStationPicker(context, vm),
+              icon: const Icon(Icons.list),
+              label: const Text("Ver todas las estaciones"),
+            ),
           ),
         ],
       ),
     );
   }
 
-  if(vm.allStations.isEmpty){
-    return const Center(child: Text("No hay staciones disponibles"));
+  void _goToDetail(BuildContext context, StationCombined station) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => StationDetailPage(station: station),
+      ),
+    );
   }
 
-  return SingleChildScrollView(
-    padding: const EdgeInsets.all(16),
-    child: Column(
-      crossAxisAlignment: crossAxisAlignment.start,
-      children:[
-        if(vm.favoriteStation != null)
-        _FavoriteStationCard(
-          station: vm.favoriteStation!,
-          onTap: () => foToDetail(context, vm.favoriteStation!),
-        )
-        else
-        _NoFavoriteCard(
-          onSelectedFavorite: () => _showStationPicker(context, vm),
-        ),
-        const SizedBox(height: 24),
-
-        const Text("Top 5 estaciones con más e-bikes", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 250,
-        child: TopEBikesChart(topStations: vm.getTopByEbikes(5)),
-        ),
-        cosnt SizedBox(height: 24),
-        Center(
-          child: ElevatedButton.icon(
-            onPressed: () => _showStationPicker(context, vm),
-            icon: const Icon(Icons.list),
-            label: const Text("ver todas las estaciones"),
-          ),
-        ),
-      ],
-    ),
-  );
- }
-
- void _goToDetail(BuildContext context, StationCombined station){
-  Navigator.push(context,
-  MaterialPageRoute(
-    builder: (_) => StationDetailPage(station: station),
-
-  ),
-  );
- }
- void _showStationPicker(BuildContext context, StationsVm vm) {
+  void _showStationPicker(BuildContext context, StationsVm vm) {
     showModalBottomSheet(
       context: context,
       builder: (_) => ListView.builder(
@@ -118,6 +130,7 @@ class HomePageState extends State<HomePage>{
         itemBuilder: (_, i) {
           final station = vm.allStations[i];
           final isFavorite = station.info.stationId == vm.favoriteStationId;
+          
           return ListTile(
             leading: Icon(
               isFavorite ? Icons.star : Icons.star_border,
@@ -144,6 +157,8 @@ class HomePageState extends State<HomePage>{
     );
   }
 }
+
+//WIDGETS PRIVADOS
 
 class _FavoriteStationCard extends StatelessWidget {
   final StationCombined station;
@@ -177,7 +192,10 @@ class _FavoriteStationCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 12),
-              CompensaIndicator(message: station.compensaBajar, color: station.compensaColor),
+              CompensaIndicator(
+                message: station.compensaBajar,
+                color: station.compensaColor,
+              ),
               const SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -272,4 +290,3 @@ class _InfoChip extends StatelessWidget {
     );
   }
 }
-

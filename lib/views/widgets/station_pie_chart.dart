@@ -1,3 +1,9 @@
+//Gráfico B: Pie/Donut con distribución de una estación
+
+import 'package:flutter/material.dart';
+import 'package:fl_chart/fl_chart.dart';
+import '../../models/station_combined.dart';
+
 class StationPieChart extends StatelessWidget {
   final StationCombined station;
 

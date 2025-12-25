@@ -1,3 +1,5 @@
+//Combina info + status con lógica calculada
+
 import 'package:flutter/material.dart';
 import 'station_info.dart';
 import 'station_status.dart';
@@ -11,41 +13,43 @@ class StationCombined {
     required this.status,
   });
 
-  //Getters 
+
 
   int get totalBikes => status.numBikesAvailable;
-  int get electricBikes => status.numEbikesAvaliable;
-  int get mechanicalbikes => status.numMechanicalBikesAvaliable;
-  int get freeDocks => status.numDocksAvaliable;
 
-  //Porcentaje de ocupacion de la estacion
-  double get occupancyRate{
-    if(info.capacity == 0) return 0;
-    final occupied = info.capacity - status.numDocksAvaliable;
-    return (occupied/ info.capacity) * 100;
+  int get electricBikes => status.numEbikesAvailable;
+
+  int get mechanicalBikes => status.numMechanicalBikesAvailable;
+
+  int get freeDocks => status.numDocksAvailable;
+
+  //Porcentaje de ocupación de la estación
+  double get occupancyRate {
+    if (info.capacity == 0) return 0;
+    final occupied = info.capacity - status.numDocksAvailable;
+    return (occupied / info.capacity) * 100;
   }
 
-  //COMPENSA BAJAR
-  String get compensaBajar{
-    //Pridridad 1: hay electricas , si compensa bajar
-    if(electricBikes >= 1){
-      return "Si - Hay $electricBikes e-bike(s) disponible(s)";
+//LÓGICA "¿ME COMPENSA BAJAR?"
+  String get compensaBajar {
+    //Prioridad 1: hay eléctricas, sí compensa bajar
+    if (electricBikes >= 1) {
+      return "Sí - Hay $electricBikes e-bike(s) disponible(s)";
     }
-    //Prioridad 2: solo hay mecanicas, quizas te compensa
-    else if (mechanicalbikes > 0){
-      return "Quizá - Solo hay bicis mecánicas($mechanicalbikes)";
+    //Prioridad 2: solo hay mecánicas, quizás te compensa
+    else if (mechanicalBikes > 0) {
+      return "Quizá - Solo hay bicis mecánicas ($mechanicalBikes)";
     }
     //Caso 3: No hay bicis, No compensa
-    else{
+    else {
       return "No - No hay bicis disponibles";
     }
   }
 
   //Color asociado al estado
-
-  Color get compensaColor{
-    if(electricBikes >= 1) return Colors.green;
-    if(mechanicalbikes > 0) return Colors.orange;
+  Color get compensaColor {
+    if (electricBikes >= 1) return Colors.green;
+    if (mechanicalBikes > 0) return Colors.orange;
     return Colors.red;
   }
 }

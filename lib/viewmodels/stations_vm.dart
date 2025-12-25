@@ -1,81 +1,79 @@
+// ViewModel: gestiona el estado de la UI
+
 import 'package:flutter/foundation.dart';
-import 'package:shared_prefereneces/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../data/bici_repository.dart';
 import '../models/station_combined.dart';
 
-class StationsVm extends ChangeNotifier{
+class StationsVm extends ChangeNotifier {
   final BiciRepository repo;
 
   StationsVm(this.repo);
 
-  bool loding = false;
+
+  bool loading = false;
   String? error;
 
-  List<StationCombined> allStation = [];
- String? favoriteStationId;
 
- StationCombined? get favoriteStationId{
-  if(favoriteStationId == null) return null;
+  List<StationCombined> allStations = [];
+  String? favoriteStationId;
 
-  try{
-    return allStations.firstWhere(
-      (s) => s.info.stationId == favoriteStationId
-    );
+  StationCombined? get favoriteStation {
+    if (favoriteStationId == null) return null;
 
-  } catch(_){
-    return null;
+    try {
+      return allStations.firstWhere(
+        (s) => s.info.stationId == favoriteStationId
+      );
+    } catch (_) {
+      return null;
+    }
   }
- }
 
- Future<void> loadStations() async{
-  loading = true;
-  error = null;
+  Future<void> loadStations() async {
+    loading = true;
+    error = null;
+    notifyListeners();
 
-  notifyListeners();
+    try {
+      allStations = await repo.fetchAllStations();
 
-  try{
-    allStations = await repo.fetchAllStations();
+      await _loadFavoriteFromPrefs();
+    } catch (e) {
+      error = e.toString();
 
-    await_loadFavoriteFromPrefs();
-  } catch(e){
-    error = e.toString();
-    allStation[];
+      allStations = [];
+    }
+    
+    loading = false;
+    notifyListeners();
   }
-  loading = false;
-  notifyListeners();
 
-  Future<void> setFavorite(String stationId) async{
+  Future<void> setFavorite(String stationId) async {
     favoriteStationId = stationId;
-
-    final prefs = stationId;
 
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString("favorite_station_id", stationId);
 
     notifyListeners();
-
   }
 
-  Future<void> await_loadFavoriteFromPrefs() async{
+
+  Future<void> _loadFavoriteFromPrefs() async {
     final prefs = await SharedPreferences.getInstance();
     favoriteStationId = prefs.getString("favorite_station_id");
-
   }
 
-  List<StationCombined> getTopByEbikes(int n){
-    final sorted = List<StationCombined> .from(allStation)
-
-    ..sort((a, b) => b.electricBikes.compareTo(a.electricBikes));
+  List<StationCombined> getTopByEbikes(int n) {
+    final sorted = List<StationCombined>.from(allStations)
+      ..sort((a, b) => b.electricBikes.compareTo(a.electricBikes));
 
     return sorted.take(n).toList();
   }
 
-  List<StationCombined> getTopByOccupancy(int n){
-      final sorted = List<StationCombined>.from(allStations)
+  List<StationCombined> getTopByOccupancy(int n) {
+    final sorted = List<StationCombined>.from(allStations)
       ..sort((a, b) => b.occupancyRate.compareTo(a.occupancyRate));
-      return sorted.take(n).toList();
+    return sorted.take(n).toList();
   }
- }
- 
-
 }

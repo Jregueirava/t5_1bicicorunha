@@ -37,4 +37,23 @@ Future<List<dynamic>> getStationsInfoJson() async{
   return stations;
 }
 
+//Estado en timepo real de la estacion
+Future<List<dynamic>> getStationsStatusJson() async {
+    final url = Uri.parse(_baseStatus);
+    final res = await http.get(url);
+
+    if (res.statusCode != 200) {
+      throw Exception("Error HTTP ${res.statusCode} en station_status");
+    }
+
+    final decoded = jsonDecode(res.body);
+
+    if (decoded is! Map || decoded["data"] == null) {
+      throw Exception("Formato inesperado en station_status");
+    }
+
+    final data = decoded["data"] as Map<String, dynamic>;
+    final stations = data["stations"] as List;
+    return stations;
+  }
 }
