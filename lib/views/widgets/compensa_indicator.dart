@@ -52,9 +52,6 @@ class CompensaIndicator extends StatelessWidget {
   }
 
   ///Devuelve el icono apropiado según el color:
-  //Verde → check_circle (✓)
-  //Naranja → warning (⚠)
-  //Rojo → cancel (✗)
   IconData _getIcon() {
     if (color == Colors.green) return Icons.check_circle;
     if (color == Colors.orange) return Icons.warning;

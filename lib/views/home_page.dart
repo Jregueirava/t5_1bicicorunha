@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Estación favorita
+          //Estación favorita
           if (vm.favoriteStation != null)
             _FavoriteStationCard(
               station: vm.favoriteStation!,
@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
           
           const SizedBox(height: 24),
 
-          // Gráfico Top e-bikes
+          //Gráfico Top e-bikes
           const Text(
             "Top 5 estaciones con más e-bikes",
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

@@ -34,7 +34,7 @@ class StationDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Información básica
+            //Información básica
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(16),
@@ -67,7 +67,7 @@ class StationDetailPage extends StatelessWidget {
 
             const SizedBox(height: 16),
 
-            // ¿Me compensa bajar?
+            //¿Me compensa bajar?
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(16),
@@ -93,7 +93,7 @@ class StationDetailPage extends StatelessWidget {
 
             const SizedBox(height: 16),
 
-            // Gráfico B: Estado actual (Pie)
+            //Gráfico B: Estado actual (Pie)
             const Text(
               'Distribución actual',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -106,7 +106,7 @@ class StationDetailPage extends StatelessWidget {
 
             const SizedBox(height: 16),
 
-            // Estadísticas numéricas
+            //Estadísticas numéricas
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(16),
