@@ -4,8 +4,9 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:intl/intl.dart';
 import '../models/station_combined.dart';
-import 'widgets/station_pie_chart.dart';
-import 'widgets/compensa_indicator.dart';
+import 'views/widgets/station_pie_chart.dart';
+import 'views/widgets/compensa_indicator.dart';
+
 
 class StationDetailPage extends StatelessWidget {
   final StationCombined station;
