@@ -50,7 +50,7 @@ Consume en tiempo real las APIs oficiales de BiciCoruña basadas en GBFS:
 **Tipo:** `PieChart` de `fl_chart`  
 **Justificación:** Ofrece una **visión clara del estado actual** de UNA estación específica (la favorita o la que se está consultando), mostrando la proporción entre e-bikes, mecánicas y anclajes libres de forma visual e inmediata.
 
-<img src="https://github.com/Jregueirava/t5_1bicicorunha/blob/main/screenshots/chart_pie.jpg?raw=true" width="600">
+<img src="https://github.com/Jregueirava/t5_1bicicorunha/blob/main/screenshots/chart_pie.jpg?raw=true](https://github.com/Jregueirava/t5_1bicicorunha/blob/main/Captura%20de%20pantalla%202025-12-25%20204723.png" width="600">
 
 ---
 
