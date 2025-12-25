@@ -3,11 +3,11 @@
 <p>Por <a href="https://www.linkedin.com/in/jesusregueirava/">Jesús Regueira Vázquez</a></p>
 </div>
 
-<img src="https://github.com/Jregueirava/t5_1bicicorunha/blob/main/screenshots/home.jpg?raw=true">
+<img src="https://github.com/Jregueirava/t5_1bicicorunha/blob/main/Captura%20de%20pantalla%202025-12-25%20204752.png?raw=true">
 
 ---
 
-## 📋 Sobre el proyecto
+##  Sobre el proyecto
 
 **BiciCoruña - Acceso Rápido** es una aplicación Flutter desarrollada como alternativa a la app oficial del servicio BiciCoruña. El objetivo principal es resolver la frustración de usuarios que necesitan **consultar rápidamente** el estado de una o varias estaciones sin tener que navegar por mapas lentos.
 
@@ -21,7 +21,7 @@ La app oficial de BiciCoruña resulta poco fluida para consultas rápidas: oblig
 
 ---
 
-## 🎯 Enfoque del desarrollo
+##  Enfoque del desarrollo
 
 ### Arquitectura: MVVM (Model-View-ViewModel)
 El proyecto sigue el patrón **MVVM** para mantener separadas las responsabilidades:
@@ -38,23 +38,23 @@ Consume en tiempo real las APIs oficiales de BiciCoruña basadas en GBFS:
 
 ---
 
-## 📊 Justificación de los gráficos
+## Justificación de los gráficos
 
 ### Gráfico A: Top 5 estaciones con más e-bikes (Barras)
 **Tipo:** `BarChart` de `fl_chart`  
 **Justificación:** Permite ver de un vistazo **dónde hay más bicis eléctricas disponibles** en toda la ciudad, sin tener que buscar estación por estación. Ideal para decidir rápidamente a qué estación ir si la tuya está vacía.
 
-<img src="https://github.com/Jregueirava/t5_1bicicorunha/blob/main/screenshots/chart_barras.jpg?raw=true" width="600">
+<img src="https://github.com/Jregueirava/t5_1bicicorunha/blob/main/Captura%20de%20pantalla%202025-12-25%20204743.png?raw=true" width="600">
 
 ### Gráfico B: Distribución de una estación (Pie/Donut)
 **Tipo:** `PieChart` de `fl_chart`  
 **Justificación:** Ofrece una **visión clara del estado actual** de UNA estación específica (la favorita o la que se está consultando), mostrando la proporción entre e-bikes, mecánicas y anclajes libres de forma visual e inmediata.
 
-<img src="https://github.com/Jregueirava/t5_1bicicorunha/blob/main/screenshots/chart_pie.jpg?raw=true](https://github.com/Jregueirava/t5_1bicicorunha/blob/main/Captura%20de%20pantalla%202025-12-25%20204723.png" width="600">
+<img src="https://github.com/Jregueirava/t5_1bicicorunha/blob/main/Captura%20de%20pantalla%202025-12-25%20204723.png?raw=true" width="600">
 
 ---
 
-## 🚀 Funcionalidades implementadas
+##  Funcionalidades implementadas
 
 ### Pantalla principal (Home)
 - Tarjeta de **estación favorita** con datos en tiempo real
